@@ -1,6 +1,6 @@
-import { A, cache, createAsync, useLocation } from "@solidjs/router";
-import { type Doc } from "../../scripts/generatemd";
-import { log } from "console";
+import { cache, createAsync, useLocation } from "@solidjs/router";
+import hljs from 'highlight.js/lib/core';
+import sql from 'highlight.js/lib/languages/sql';
 import { getData } from "../../scripts/LoadData";
 import { For, Show, createEffect, createSignal } from "solid-js";
 
@@ -17,6 +17,8 @@ export default function Home() {
   const docs = createAsync(() => getDocs())
   const [target, setTarget] = createSignal("/")
 
+  hjls.registerLanguage('sql', sql);
+
   const active = (path: string) =>
     path == target() ? "text-sky-400" : "";
 
@@ -27,6 +29,7 @@ export default function Home() {
 
   return (
     <>
+      <link rel="stylesheet" href="../scripts/prism.css" />
       <aside class="fixed top-0 left-0 w-[300px] text-gray-300 bg-ox-blue h-screen py-5 px-0">
         <ul>
           <For each={docs()}>
@@ -55,7 +58,7 @@ export default function Home() {
             <section id="params" class="mb-4">
               <h2 class="text-xl font-semibold mb-2">Parameters</h2>
               <pre class="bg-gray-800 p-4 rounded-lg mb-4">
-                <code class="language-sql">{current().Params.join("\n")}</code>
+                <code class="">{current().Params.join("\n")}</code>
               </pre>
             </section>
 
@@ -71,7 +74,7 @@ export default function Home() {
             <section id="body" class="mb-4">
               <h2 class="text-xl font-semibold mb-2">Try It</h2>
               <pre class="bg-gray-800 p-4 rounded-lg">
-                <code class="language-sql">{current().Body}</code>
+                <code class="">{current().Body}</code>
               </pre>
             </section>
 
